@@ -8,6 +8,10 @@ class LoginHomePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
+          // 배경 흰색 설정
+          Container(
+            color: Colors.white, // 흰색 배경
+          ),
           // 배경 이미지 (알약)
           Positioned(
             bottom: 190, // 화면 하단에 배치
@@ -36,8 +40,6 @@ class LoginHomePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 40),
-
-                const SizedBox(height: 50),
                 // 불투명한 회색 박스
                 Container(
                   height: 280,

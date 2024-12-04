@@ -3,6 +3,7 @@ import 'custom_app_bar.dart'; // CustomAppBar 컴포넌트 불러오기
 import 'custom_bottom_bar.dart'; // CustomBottomBar import
 import 'allow.dart'; // AllowPage import
 import 'option.dart';
+import 'home.dart'; // LoginHomePage import
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -13,7 +14,11 @@ class MainPage extends StatelessWidget {
       appBar: CustomAppBar(
         title: 'Pill Check', // CustomAppBar에서 제목 설정
         onBackPressed: () {
-          Navigator.pop(context); // 뒤로 가기 동작
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginHomePage()), // LoginHomePage로 이동
+                (route) => false,
+          );
         },
       ),
       body: Stack(

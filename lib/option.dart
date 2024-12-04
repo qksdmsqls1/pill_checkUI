@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pill Check',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const LoginHomePage(),
+      home: const MainPage(),
     );
   }
 }

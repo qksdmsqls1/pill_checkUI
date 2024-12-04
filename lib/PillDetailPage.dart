@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/mmain.dart';
 import 'custom_app_bar.dart'; // CustomAppBar 컴포넌트 import
 import 'custom_bottom_bar.dart'; // CustomBottomBar 컴포넌트 import
 import 'result_page.dart'; // ResultPage import
@@ -56,7 +57,7 @@ class PillDetailPage extends StatelessWidget {
         onHomePressed: () {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const ResultPage()),
+            MaterialPageRoute(builder: (context) => const MainPage()),
                 (route) => false,
           );
         },
