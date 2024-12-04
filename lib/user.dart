@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'main.dart'; // ThemeState를 가져오기 위해 import
+import 'custom_app_bar.dart'; // CustomAppBar 컴포넌트 불러오기
+import 'custom_bottom_bar.dart'; // CustomBottomBar 컴포넌트 불러오기
+import 'option.dart'; // ThemeState를 가져오기 위해 import
 
 class BlankPage extends StatelessWidget {
   const BlankPage({super.key});
@@ -7,41 +9,9 @@ class BlankPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: ValueListenableBuilder(
-          valueListenable: ThemeState.textColor,
-          builder: (context, textColor, child) {
-            return ValueListenableBuilder(
-              valueListenable: ThemeState.textSize,
-              builder: (context, textSize, child) {
-                return ValueListenableBuilder(
-                  valueListenable: ThemeState.fontIndex,
-                  builder: (context, fontIndex, child) {
-                    final fonts = ['Default', 'Serif', 'Monospace'];
-                    return Text(
-                      'Pill check',
-                      style: TextStyle(
-                        fontFamily: fonts[fontIndex] == 'Default' ? null : fonts[fontIndex],
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                        fontSize: textSize,
-                      ),
-                    );
-                  },
-                );
-              },
-            );
-          },
-        ),
-        backgroundColor: const Color(0xFFE9E9E9),
-        centerTitle: true,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context); // 뒤로가기
-          },
-        ),
+      appBar: CustomAppBar(
+        title: 'Pill check', // 제목을 고정
+        onBackPressed: () => Navigator.pop(context), // 뒤로가기
       ),
       body: ValueListenableBuilder(
         valueListenable: ThemeState.backgroundColor,
@@ -84,75 +54,31 @@ class BlankPage extends StatelessWidget {
                 Expanded(
                   child: Stack(
                     children: [
-                      // 이미지가 뒤로 가도록 먼저 추가
                       Positioned(
-                        left: 0, // 좌측 위치
-                        right: 0, // 우측 위치
-                        top: 250, // 상단 위치
+                        left: 0,
+                        right: 0,
+                        top: 250,
                         child: Image.asset(
-                          'assets/images/1.png', // 이미지 경로
-                          width: 300, // 원하는 너비
-                          height: 350, // 원하는 높이
-                          fit: BoxFit.contain, // 이미지 비율 유지
-                          alignment: Alignment.center, // 이미지 중앙 정렬
+                          'assets/images/1.png',
+                          width: 300,
+                          height: 350,
+                          fit: BoxFit.contain,
+                          alignment: Alignment.center,
                         ),
                       ),
-                      // 텍스트가 이미지 위에 오도록 배치
                       ListView(
                         padding: const EdgeInsets.all(16.0),
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.8), // 텍스트 배경 투명도 조절
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: ValueListenableBuilder(
-                              valueListenable: ThemeState.textColor,
-                              builder: (context, textColor, child) {
-                                return ValueListenableBuilder(
-                                  valueListenable: ThemeState.textSize,
-                                  builder: (context, textSize, child) {
-                                    return Text(
-                                      '- Pill check의 현 버전은 1.0입니다.\n'
-                                          '사진불러오기 권한허용 업데이트.\n'
-                                          '카카오톡/구글 로그인을 업데이트 하였습니다.\n',
-                                      style: TextStyle(
-                                        fontSize: textSize,
-                                        color: textColor,
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
+                          _buildTextContainer(
+                            '- Pill check의 현 버전은 1.0입니다.\n'
+                                '사진불러오기 권한허용 업데이트.\n'
+                                '카카오톡/구글 로그인을 업데이트 하였습니다.\n',
                           ),
                           const SizedBox(height: 16),
-                          Container(
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.8), // 텍스트 배경 투명도 조절
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: ValueListenableBuilder(
-                              valueListenable: ThemeState.textColor,
-                              builder: (context, textColor, child) {
-                                return ValueListenableBuilder(
-                                  valueListenable: ThemeState.textSize,
-                                  builder: (context, textSize, child) {
-                                    return Text(
-                                      '- 12/26 version 업데이트 예정 (v1.3):\n'
-                                          '알약 커뮤니티 기능 생성\n'
-                                          '사용자 프로필 기능 생성',
-                                      style: TextStyle(
-                                        fontSize: textSize,
-                                        color: textColor,
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
+                          _buildTextContainer(
+                            '- 12/26 version 업데이트 예정 (v1.3):\n'
+                                '알약 커뮤니티 기능 생성\n'
+                                '사용자 프로필 기능 생성',
                           ),
                         ],
                       ),
@@ -185,19 +111,38 @@ class BlankPage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: const Color(0xFFE9E9E9),
-        child: Container(
-          height: 78,
-          alignment: Alignment.center,
-          child: IconButton(
-            icon: const Icon(Icons.home, size: 30, color: Colors.black),
-            onPressed: () {
-              Navigator.popUntil(context, ModalRoute.withName('/')); // 홈으로 이동
-            },
-          ),
-        ),
+      bottomNavigationBar: CustomBottomBar(
+        onHomePressed: () {
+          Navigator.popUntil(context, ModalRoute.withName('/')); // 홈으로 이동
+        },
       ),
+    );
+  }
+
+  Widget _buildTextContainer(String content) {
+    return ValueListenableBuilder(
+      valueListenable: ThemeState.textColor,
+      builder: (context, textColor, child) {
+        return ValueListenableBuilder(
+          valueListenable: ThemeState.textSize,
+          builder: (context, textSize, child) {
+            return Container(
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Text(
+                content,
+                style: TextStyle(
+                  fontSize: textSize,
+                  color: textColor,
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

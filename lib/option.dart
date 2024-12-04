@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'custom_app_bar.dart'; // CustomAppBar 컴포넌트 불러오기
+import 'custom_bottom_bar.dart'; // CustomBottomBar 컴포넌트 불러오기
 import 'tema.dart'; // 테마 설정 페이지 import
 import 'user.dart';
 import 'mmain.dart';
+import 'ErrorPage.dart';
+import 'load.dart'; // LoadingPage
+import 'AccountSettingsPage.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pill Check',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const SettingsPage(),
+      home: const MainPage(),
     );
   }
 }
@@ -33,44 +39,14 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: ValueListenableBuilder(
-          valueListenable: ThemeState.textColor,
-          builder: (context, textColor, child) {
-            return ValueListenableBuilder(
-              valueListenable: ThemeState.textSize,
-              builder: (context, textSize, child) {
-                return ValueListenableBuilder(
-                  valueListenable: ThemeState.fontIndex,
-                  builder: (context, fontIndex, child) {
-                    final fonts = ['Default', 'Serif', 'Monospace'];
-                    return Text(
-                      'Pill check',
-                      style: TextStyle(
-                        fontFamily: fonts[fontIndex] == 'Default' ? null : fonts[fontIndex],
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                        fontSize: textSize,
-                      ),
-                    );
-                  },
-                );
-              },
-            );
-          },
-        ),
-        backgroundColor: const Color(0xFFE9E9E9),
-        centerTitle: true,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () { Navigator.pushReplacement(
+      appBar: CustomAppBar(
+        title: 'Pill Check',
+        onBackPressed: () {
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const MainPage()), // mmain.dart의 MainPage로 이동
           );
-            // 뒤로가기 로직
-          },
-        ),
+        },
       ),
       body: ValueListenableBuilder(
         valueListenable: ThemeState.backgroundColor,
@@ -128,7 +104,12 @@ class SettingsPage extends StatelessWidget {
                         icon: Icons.person,
                         title: '계정 설정',
                         onTap: () {
-                          // 계정 설정 로직
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AccountSettingsPage(), // AccountSettingsPage로 이동
+                            ),
+                          );
                         },
                       ),
                       _buildSettingsTile(
@@ -143,7 +124,6 @@ class SettingsPage extends StatelessWidget {
                           );
                         },
                       ),
-                      // 이미지 추가 부분
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Center(
@@ -189,18 +169,13 @@ class SettingsPage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: const Color(0xFFE9E9E9),
-        child: Container(
-          height: 78,
-          alignment: Alignment.center,
-          child: IconButton(
-            icon: const Icon(Icons.home, size: 30, color: Colors.black),
-            onPressed: () {
-              // 홈 이동 로직
-            },
-          ),
-        ),
+      bottomNavigationBar: CustomBottomBar(
+        onHomePressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const MainPage()), // mmain.dart의 MainPage로 이동
+          );
+        },
       ),
     );
   }
