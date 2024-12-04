@@ -7,6 +7,9 @@ import 'mmain.dart';
 import 'ErrorPage.dart';
 import 'load.dart'; // LoadingPage
 import 'AccountSettingsPage.dart';
+import 'wifi.dart';
+import 'home.dart';
+import 'result_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pill Check',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MainPage(),
+      home: const LoginHomePage(),
     );
   }
 }
