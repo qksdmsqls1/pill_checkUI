@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'custom_app_bar.dart'; // CustomAppBar 컴포넌트 불러오기
 import 'custom_bottom_bar.dart'; // CustomBottomBar 컴포넌트 불러오기
-import 'tema.dart'; // 테마 설정 페이지 import
+import 'tema.dart'; // 테마 설정 페이지 impor
 import 'user.dart';
 import 'mmain.dart';
 import 'ErrorPage.dart';
